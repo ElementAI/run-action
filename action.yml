@@ -1,0 +1,48 @@
+name: Run
+description: Run a job inside the cluster
+inputs:
+  image:
+    description: string - Docker image.
+  commands:
+    description: string - Commands (for more than one, use a multiline string with one per line).
+  data:
+    description: string - Data to mount (for more than one, use a multiline string with one per line).
+  env:
+    description: string - Environment variables (for more than one, use a multiline string with one per line).
+  isProcessAgent:
+    description: bool
+  workdir:
+    description: string - Working directory inside the container. (default "")
+  cpu:
+    description: float - Number of requested CPUs.
+  cpuModel:
+    description: string - CPU model filter. A leading '!' reverses the filter.
+  mem:
+    description: int - Requested amount of memory in gigabytes.
+  gpu:
+    description: int - Number of requested GPUs. (default 0)
+  gpuMem:
+    description: int - Requested amount of GPU memory in gigabytes. (default 0)
+  gpuModel:
+    description: string - GPU model filter. A leading '!' reverses the filter.
+  gpuTensorCores:
+    description: bool - Request GPU tensor-cores.
+  gpuCudaVersion:
+    description: float - Required CUDA version. (default 0.0)
+  inference:
+    description: bool
+  maxRunTime:
+    description: int - Maximum job execution time in seconds. (default 172800 (48h) for non-preemptable jobs, 0 (unlimited) for preemptable and interactive jobs)
+  preemptable:
+    description: bool - Allow job to be interrupted.
+  restartable:
+    description: bool - Allow job to be interrupted and restarted.
+  name:
+    description: string - Job name (alphanumeric lowercase string, with underscores allowed).
+  tags:
+    description: string - Same syntax as environment variables (for more than one, use a multiline string with one per line).
+  options:
+    description: string - Options (json object in a string).
+runs:
+  using: node12
+  main: index.js
