@@ -33,3 +33,27 @@ eai job logs -f $JOB
 ```
 
 You might need to create new policies for `$ROLE` so your actions can access your image, data, or whatever they need.
+
+## Example of workflow using this action
+```yaml
+on: [push]
+
+jobs:
+  hello_world_job:
+    runs-on: self-hosted
+    name: Hello World Job
+    steps:
+      - name: Hello World Step
+        uses: ElementAI/run-action@v1
+        id: hello
+        with:
+          image: alpine
+          commands: |
+            echo "$VAR_A $VAR_B from $EAI_CONSOLE_URL"
+            ls /data
+          data: shared.dataset.coco:/data:ro
+          env: |
+            VAR_A=Hello
+            VAR_B=World
+          cpu: 0.1
+```
