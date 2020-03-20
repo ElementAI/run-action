@@ -57,3 +57,4 @@ jobs:
             VAR_B=World
           cpu: 0.1
 ```
+For more information about the available options `with` which run this action, see [action.yml](action.yml).
