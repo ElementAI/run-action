@@ -4,6 +4,7 @@ const run = require("./run");
 
 const parseBoolean = (input) => input === "true";
 const parseCommand = (commands) => ["/bin/sh", "-ce", commands];
+const parseString = (input) => input;
 const parseStringArray = (input) => input.split("\n");
 const parseTag = (input) => {
   const split = input.indexOf("=");
@@ -19,9 +20,9 @@ const createFields = (fields) => () => {
   return Object.keys(r).length > 0 ? r : undefined;
 };
 
-const createField = ({ name, options, parse } = {}) => (field) => {
+const createField = ({ name, options, parse = parseString } = {}) => (field) => {
   const input = core.getInput(name || field, options);
-  return input ? (parse ? parse(input) : input) : undefined;
+  return input === "" ? undefined : parse(input);
 };
 
 const getJobSpec = createFields({
