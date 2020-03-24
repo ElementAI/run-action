@@ -64,6 +64,28 @@ const getJobSpec = createFields({
   try {
     const jobSpec = getJobSpec();
 
+    const { GITHUB_WORKSPACE: workspace, RUNNER_DATA: runnerData, RUNNER_DIR: runnerDir } = process.env;
+
+    if (workspace !== undefined && runnerData !== undefined) {
+      const home = "/home/toolkit";
+      const split = workspace.lastIndexOf("/");
+
+      if (jobSpec.environmentVars === undefined) {
+        jobSpec.environmentVars = [`HOME=${home}`];
+      } else if (!jobSpec.environmentVars.some((env) => env.startsWith("HOME="))) {
+        jobSpec.environmentVars.push(`HOME=${home}`);
+      }
+
+      if (jobSpec.data === undefined) {
+        jobSpec.data = [];
+      }
+      jobSpec.data.push(`${workspace.substring(0, split).replace(runnerDir, runnerData)}:${home}:rw`);
+
+      if (jobSpec.workdir === undefined) {
+        jobSpec.workdir = `${home}${workspace.substring(split)}`;
+      }
+    }
+
     await run(jobSpec);
   } catch (error) {
     core.setFailed(error.message);
