@@ -51,7 +51,7 @@ jobs:
         id: hello
         with:
           image: alpine
-          commands: |
+          run: |
             echo "$VAR_A $VAR_B from $EAI_CONSOLE_URL"
             ls /data
           data: shared.dataset.coco:/data:ro

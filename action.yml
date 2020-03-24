@@ -3,8 +3,8 @@ description: Run a job inside the cluster
 inputs:
   image:
     description: string - Docker image.
-  commands:
-    description: string - Commands (for more than one, use a multiline string with one per line).
+  run:
+    description: string - Commands to run (for more than one, you can use a multiline string).
   data:
     description: string - Data to mount (for more than one, use a multiline string with one per line).
   env:

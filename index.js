@@ -27,7 +27,7 @@ const createField = ({ name, options, parse = parseString } = {}) => (field) => 
 
 const getJobSpec = createFields({
   // Execution
-  command: createField({ name: "commands", parse: parseCommand }),
+  command: createField({ name: "run", parse: parseCommand }),
   data: createField({ parse: parseStringArray }),
   environmentVars: createField({ name: "env", parse: parseStringArray }),
   image: createField({ options: { required: true } }),
