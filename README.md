@@ -19,9 +19,12 @@ export ROLE=$(eai role new $ACCOUNT. --fields id --no-header)
 export ACCOUNT_URN=$(eai account get $ACCOUNT --fields urn --no-header)
 eai role policy new $ROLE --action account:get --action job:new --resource $ACCOUNT_URN
 eai role policy new $ROLE --action job:get --resource $ACCOUNT_URN:job:\*
+export DATA_URN=$(eai data get $DATA --fields urn --no-header)
+eai role policy new $ROLE --action data:\* --resource $DATA_URN
 export JOB=$(eai job new \
     --account $ACCOUNT \
     -d $DATA:/runner:rw \
+    -e RUNNER_DATA=$DATA \
     -e "RUNNER_CONFIG=$CONFIG" \
     -i registry.console.elementai.com/shared.image/github-actions-runner \
     --name $JOB_NAME \
