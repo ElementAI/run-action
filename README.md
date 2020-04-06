@@ -25,6 +25,7 @@ export JOB=$(eai job new \
     --account $ACCOUNT \
     -d $DATA:/runner:rw \
     -e RUNNER_DATA=$DATA \
+    -e RUNNER_DIR=/runner \
     -e "RUNNER_CONFIG=$CONFIG" \
     -i registry.console.elementai.com/shared.image/github-actions-runner \
     --name $JOB_NAME \
