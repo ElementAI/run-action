@@ -68,8 +68,7 @@ const getJobSpec = createFields({
     const { GITHUB_WORKSPACE: workspace, RUNNER_DATA: runnerData, RUNNER_DIR: runnerDir } = process.env;
 
     if (workspace !== undefined && runnerData !== undefined) {
-      const home = "/home/toolkit";
-      const split = workspace.lastIndexOf("/");
+      const home = workspace.substring(0, workspace.lastIndexOf("/"));
 
       if (jobSpec.environmentVars === undefined) {
         jobSpec.environmentVars = [`HOME=${home}`];
@@ -80,10 +79,10 @@ const getJobSpec = createFields({
       if (jobSpec.data === undefined) {
         jobSpec.data = [];
       }
-      jobSpec.data.push(`${workspace.substring(0, split).replace(runnerDir, runnerData)}:${home}:rw`);
+      jobSpec.data.push(`${runnerData}:${runnerDir}:rw`);
 
       if (jobSpec.workdir === undefined) {
-        jobSpec.workdir = `${home}${workspace.substring(split)}`;
+        jobSpec.workdir = workspace;
       }
     }
 
