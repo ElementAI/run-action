@@ -15,12 +15,9 @@ export JOB_NAME=<job name here>
 The following commands will create the data, role and job for the runner. You should see the configuration happening, and finally the text `Listening for Jobs`.
 ```bash
 export DATA=$(eai data new $ACCOUNT. --fields id --no-header)
-export ROLE=$(eai role new $ACCOUNT. --fields id --no-header)
 export ACCOUNT_URN=$(eai account get $ACCOUNT --fields urn --no-header)
-eai role policy new $ROLE --action account:get --action job:new --resource $ACCOUNT_URN
-eai role policy new $ROLE --action job:get --resource $ACCOUNT_URN:job:\*
 export DATA_URN=$(eai data get $DATA --fields urn --no-header)
-eai role policy new $ROLE --action data:\* --resource $DATA_URN
+export ROLE=$(eai role new $ACCOUNT. --policy account:get+job:new@$ACCOUNT_URN,job:get@$ACCOUNT_URN:job:\*,data:\*@$DATA_URN --fields id --no-header)
 export JOB=$(eai job new \
     --account $ACCOUNT \
     -d $DATA:/runner:rw \
