@@ -15,11 +15,12 @@ const createMessage = async (response) => {
   return `${status}, ${message}`;
 };
 
-module.exports = async function(body) {
+module.exports = async (body) => {
   const consoleURL = process.env.EAI_CONSOLE_URL;
 
   const tokenURL = new URL(consoleURL);
-  tokenURL.hostname = `token.${tokenURL.hostname}`;
+  tokenURL.hostname = `internal.${tokenURL.hostname}`;
+  tokenURL.pathname = "/v1/token";
 
   let response = await fetch(tokenURL);
   if (response.status !== 200) {
