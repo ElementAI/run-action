@@ -15,24 +15,39 @@ const createMessage = async (response) => {
   return `${status}, ${message}`;
 };
 
-module.exports = async function(body) {
+module.exports = async (body) => {
   const consoleURL = process.env.EAI_CONSOLE_URL;
 
   const tokenURL = new URL(consoleURL);
-  tokenURL.hostname = `token.${tokenURL.hostname}`;
+  tokenURL.hostname = `internal.${tokenURL.hostname}`;
+  tokenURL.pathname = "/v1/token";
 
-  let response = await fetch(tokenURL);
-  if (response.status !== 200) {
-    throw new Error(`Failed to get token: ${await createMessage(response)}`);
-  }
-  const bearer = await response.text();
-  const authorization = `Bearer ${bearer}`;
+  const getToken = async () => {
+    const response = await fetch(tokenURL);
+    if (response.status !== 200) {
+      throw new Error(`Failed to get token: ${await createMessage(response)}`);
+    }
+    const bearer = await response.text();
+    return `Bearer ${bearer}`;
+  };
+
+  let authorization = await getToken();
+
+  const fetchWithAuth = async (url, { headers = {}, ...options } = {}) => {
+    let response = await fetch(url, { ...options, headers: { ...headers, authorization } });
+    if (response.status === 401) {
+      console.log(`Received 401, refreshing token and retrying`);
+      authorization = await getToken();
+
+      response = await fetch(url, { ...options, headers: { ...headers, authorization } });
+    }
+    return response;
+  };
 
   console.log(`Submitting job with`, body);
-  response = await fetch(`${consoleURL}/v1/job`, {
+  let response = await fetchWithAuth(`${consoleURL}/v1/job`, {
     method: "POST",
     headers: {
-      authorization,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
@@ -49,7 +64,7 @@ module.exports = async function(body) {
     console.log(`Job ${job.state.toLowerCase()}, waiting ${delay / 1000} s`);
     await sleep(delay);
 
-    response = await fetch(`${consoleURL}/v1/job/${job.id}`, { headers: { authorization } });
+    response = await fetchWithAuth(`${consoleURL}/v1/job/${job.id}`);
     if (response.status !== 200) {
       throw new Error(`Failed to get job ${job.id}: ${await createMessage(response)}`);
     }
@@ -59,7 +74,7 @@ module.exports = async function(body) {
     nextDelay *= 2;
   }
 
-  response = await fetch(`${consoleURL}/v1/job/${job.id}/logs`, { headers: { authorization } });
+  response = await fetchWithAuth(`${consoleURL}/v1/job/${job.id}/logs`);
   if (response.status === 200) {
     const log = await response.text();
     console.log(log);
