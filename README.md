@@ -3,7 +3,7 @@
 ## Set up a runner to run this GitHub Action inside ElementAI Orkestrator
 Browse to the GitHub repo and click the `Settings` tab (you need to be an admin of the repo), the `Actions` menu, the `Add Runner` button, and finally, the shell command suggested to create the runner (which will copy it to the clipboard).
 
-![Screenshot](https://user-images.githubusercontent.com/8386369/85742553-547b2c80-b6d1-11ea-95c1-8edc0a7c49e3.png)
+![Screenshot](https://user-images.githubusercontent.com/8386369/85743778-5691bb00-b6d2-11ea-8755-7cf7b17b9185.png)
 
 Paste it in your shell to save it to the environment variable `CONFIG`. Also save to `ACCOUNT` the `id` or `fullName` of the account to be used to create the data, role and job. Finally, save to `JOB_NAME` the name to give the job.
 ```bash
