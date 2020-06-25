@@ -1,7 +1,7 @@
 # Run action
 
 ## Set up a runner to run this GitHub Action inside ElementAI Orkestrator
-Browse to the GitHub repo and click the `Settings` tab (you need to be an admin of the repo), the `Actions` menu, the `Add runner` button, and finally, the shell command suggested to create the runner (which will copy it to the clipboard).
+Browse to the GitHub repo and click the `Settings` tab (you need to be an admin of the repo), the `Actions` menu, the `Add Runner` button, and finally, the shell command suggested to create the runner (which will copy it to the clipboard).
 
 ![Screenshot](https://user-images.githubusercontent.com/8386369/75295966-f6f5d280-57f9-11ea-91a9-6f0ef765c489.png)
 
