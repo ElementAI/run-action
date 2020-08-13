@@ -30,7 +30,7 @@ JOB=$(eai job new \
     --role $ROLE \
     --fields id \
     --no-header)
-eai job logs -f $JOB
+eai job log -f $JOB
 ```
 
 You might need to create new policies for `$ROLE` so your actions can access your image, data, or whatever they need.
