@@ -45,7 +45,7 @@ jobs:
     name: Hello World Job
     steps:
       - name: Hello World Step
-        uses: ElementAI/run-action@v1
+        uses: ElementAI/run-action@master
         id: hello
         with:
           image: alpine
